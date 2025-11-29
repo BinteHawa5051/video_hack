@@ -141,6 +141,7 @@
 - [x] 4. Implement Translation Service
 
 
+
   - [x] 4.1 Create TranslationService class in /lib/translation with free API integration
 
 
@@ -202,8 +203,12 @@
   
   - **After completion: Commit to GitHub with user permission**
 
-- [ ] 5. Implement Caption Manager to coordinate speech and translation
-  - [ ] 5.1 Create CaptionManager class in /lib/captions
+- [x] 5. Implement Caption Manager to coordinate speech and translation
+
+
+  - [x] 5.1 Create CaptionManager class in /lib/captions
+
+
     - Create TypeScript interfaces for Caption type
     - Initialize with SpeechRecognitionService and TranslationService
     - Implement caption queue management with proper typing
@@ -212,65 +217,92 @@
     - Use callbacks or EventEmitter for new captions
     - _Requirements: 7.1, 7.2, 7.3_
   
-  - [ ] 5.2 Implement local caption generation
+  - [x] 5.2 Implement local caption generation
+
+
     - Connect speech recognition to caption creation
     - Add captions to queue with timestamps
     - Mark captions as 'local' speaker
     - _Requirements: 3.1, 4.1_
   
-  - [ ] 5.3 Write property test for speech recognition invocation
+  - [x] 5.3 Write property test for speech recognition invocation
+
+
     - **Feature: video-call-live-captions, Property 12: Speech recognition invocation**
     - **Validates: Requirements 4.1**
   
-  - [ ] 5.4 Implement remote caption processing
+  - [x] 5.4 Implement remote caption processing
+
+
     - Receive caption data from peer via WebRTC data channel
     - Add remote captions to queue
     - Mark captions as 'remote' speaker
     - _Requirements: 7.3_
   
-  - [ ] 5.5 Write property test for speaker identification
+  - [x] 5.5 Write property test for speaker identification
+
+
     - **Feature: video-call-live-captions, Property 25: Speaker identification preservation**
     - **Validates: Requirements 7.3**
   
-  - [ ] 5.6 Implement language selection and translation pipeline
+  - [x] 5.6 Implement language selection and translation pipeline
+
+
     - Set default target language to English
     - Apply translation when target language differs from English
     - Update target language on user selection
     - _Requirements: 5.1, 5.2, 5.3_
   
-  - [ ] 5.7 Write property test for default English caption language
+  - [x] 5.7 Write property test for default English caption language
+
+
     - **Feature: video-call-live-captions, Property 16: Default English caption language**
     - **Validates: Requirements 5.1**
   
-  - [ ] 5.8 Write property test for language selection affecting future captions
+  - [x] 5.8 Write property test for language selection affecting future captions
+
+
     - **Feature: video-call-live-captions, Property 17: Language selection affects future captions**
     - **Validates: Requirements 5.2, 5.3**
   
-  - [ ] 5.9 Implement mute state caption control
+  - [x] 5.9 Implement mute state caption control
+
+
     - Pause caption generation when microphone is muted
     - Resume caption generation when microphone is unmuted
     - _Requirements: 3.4, 3.5_
   
-  - [ ] 5.10 Write property test for mute state affecting captions
+  - [x] 5.10 Write property test for mute state affecting captions
+
+
     - **Feature: video-call-live-captions, Property 11: Mute state affects captions**
     - **Validates: Requirements 3.4, 3.5**
   
-  - [ ] 5.11 Implement chronological caption ordering
+  - [x] 5.11 Implement chronological caption ordering
+
+
     - Sort captions by timestamp before display
     - Maintain order when adding new captions
     - _Requirements: 7.2_
   
-  - [ ] 5.12 Write property test for chronological ordering
+  - [x] 5.12 Write property test for chronological ordering
+
+
     - **Feature: video-call-live-captions, Property 24: Chronological caption ordering**
     - **Validates: Requirements 7.2**
   
-  - [ ] 5.13 Implement continued operation after translation failure
+  - [x] 5.13 Implement continued operation after translation failure
+
+
     - Catch translation errors per caption
     - Display untranslated text on failure
     - Continue processing next captions
     - _Requirements: 6.5_
   
-  - [ ] 5.14 Write property test for continued operation after failure
+  - [x] 5.14 Write property test for continued operation after failure
+
+
+
     - **Feature: video-call-live-captions, Property 22: Continued operation after translation failure**
     - **Validates: Requirements 6.5**
   
@@ -282,8 +314,13 @@
   
   - **After completion: Commit to GitHub with user permission**
 
-- [ ] 6. Implement React components for video and caption display
-  - [ ] 6.1 Create VideoDisplay component in /components
+- [x] 6. Implement React components for video and caption display
+
+
+
+
+  - [x] 6.1 Create VideoDisplay component in /components
+
     - Create TypeScript props interface
     - Accept local and remote MediaStream as props
     - Use useRef for video element references
@@ -292,7 +329,9 @@
     - Style with Tailwind CSS for responsive layout
     - _Requirements: 7.1, 7.5_
   
-  - [ ] 6.2 Create CaptionDisplay component in /components
+
+  - [x] 6.2 Create CaptionDisplay component in /components
+
     - Create TypeScript props interface for caption data
     - Accept array of Caption objects as props
     - Render captions with speaker indicators
@@ -300,39 +339,53 @@
     - Style with Tailwind CSS for readability
     - _Requirements: 7.1, 7.3_
   
-  - [ ] 6.3 Write property test for active media transmission
+
+  - [x] 6.3 Write property test for active media transmission
+
     - **Feature: video-call-live-captions, Property 6: Active media transmission**
     - **Validates: Requirements 2.1, 2.2**
   
-  - [ ] 6.4 Write property test for caption display
+
+  - [x] 6.4 Write property test for caption display
+
     - **Feature: video-call-live-captions, Property 23: Caption display in designated area**
     - **Validates: Requirements 7.1**
   
-  - [ ] 6.5 Implement caption list management in CaptionDisplay
+
+  - [x] 6.5 Implement caption list management in CaptionDisplay
+
     - Set maximum number of visible captions (e.g., 10)
     - Use React state to manage caption array
     - Remove oldest captions when limit reached using slice
     - _Requirements: 7.4_
   
-  - [ ] 6.6 Write property test for caption list management
+
+  - [x] 6.6 Write property test for caption list management
+
     - **Feature: video-call-live-captions, Property 26: Caption list management at capacity**
     - **Validates: Requirements 7.4**
   
-  - [ ] 6.7 Create LanguageSelector component in /components
+
+  - [x] 6.7 Create LanguageSelector component in /components
+
     - Create TypeScript props interface with onChange callback
     - Populate dropdown with supported languages
     - Handle language change events
     - Style with Tailwind CSS
     - _Requirements: 5.1, 5.2, 5.3_
   
-  - [ ] 6.8 Create MediaControls component in /components
+
+  - [x] 6.8 Create MediaControls component in /components
+
     - Create TypeScript props interface for toggle callbacks
     - Add buttons for audio/video toggle with icons
     - Display current media state (on/off)
     - Style with Tailwind CSS
     - _Requirements: 2.4, 2.5_
   
-  - [ ] 6.9 Create ConnectionStatus component in /components
+
+  - [x] 6.9 Create ConnectionStatus component in /components
+
     - Create TypeScript props interface for connection state
     - Show "Connecting..." when establishing connection
     - Show "Connected" when call is active
@@ -349,8 +402,11 @@
   
   - **After completion: Commit to GitHub with user permission**
 
-- [ ] 7. Integrate all components and implement main application flow
-  - [ ] 7.1 Create useVideoCall custom hook in /hooks
+- [-] 7. Integrate all components and implement main application flow
+
+
+  - [x] 7.1 Create useVideoCall custom hook in /hooks
+
     - Initialize all service instances (WebRTC, Speech, Translation, Caption)
     - Manage call state with useState (connecting, connected, disconnected)
     - Manage media streams with useState

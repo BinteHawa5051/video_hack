@@ -147,11 +147,17 @@ export function useVideoCall({ sessionId, onError }: UseVideoCallOptions): UseVi
         await webrtcManager.createSession(sessionId);
         console.log('✅ SUCCESS! I am the HOST');
       } catch (error: any) {
-        // If creation fails, join instead (become guest)
-        console.log('👤 Session exists, joining as GUEST...');
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await webrtcManager.joinSession(sessionId);
-        console.log('✅ SUCCESS! Connected as GUEST');
+        // Check if error is because ID is taken (someone else is host)
+        if (error.message === 'SESSION_ID_TAKEN') {
+          // If creation fails, join instead (become guest)
+          console.log('👤 Session exists, joining as GUEST...');
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          await webrtcManager.joinSession(sessionId);
+          console.log('✅ SUCCESS! Connected as GUEST');
+        } else {
+          // Some other error occurred
+          throw error;
+        }
       }
 
       // Start caption generation
@@ -179,6 +185,8 @@ export function useVideoCall({ sessionId, onError }: UseVideoCallOptions): UseVi
         errorMessage = 'Camera/microphone access denied. Please allow permissions and refresh.';
       } else if (error.name === 'NotFoundError') {
         errorMessage = 'No camera or microphone found. Please connect a device.';
+      } else if (error.message && error.message.includes('is taken')) {
+        errorMessage = 'This session is already in use. Please create a new call or close other tabs.';
       } else if (error.message) {
         errorMessage = error.message;
       }
