@@ -86,6 +86,21 @@ export default function CallPage() {
       <div className="flex-1 p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Video Section */}
         <div className="lg:col-span-2 space-y-4">
+          {/* Connection Instructions */}
+          {connectionState === 'connecting' && (
+            <div className="bg-yellow-900 bg-opacity-30 border border-yellow-500 rounded-lg p-4 text-yellow-200">
+              <p className="font-semibold">⏳ Connecting...</p>
+              <p className="text-sm mt-1">Make sure both participants have allowed camera and microphone permissions.</p>
+            </div>
+          )}
+          
+          {connectionState === 'connected' && !remoteStream && (
+            <div className="bg-blue-900 bg-opacity-30 border border-blue-500 rounded-lg p-4 text-blue-200">
+              <p className="font-semibold">👤 Waiting for remote video...</p>
+              <p className="text-sm mt-1">The other participant is connected. Their video should appear shortly.</p>
+            </div>
+          )}
+          
           <VideoDisplay localStream={localStream} remoteStream={remoteStream} />
           
           {/* Media Controls */}

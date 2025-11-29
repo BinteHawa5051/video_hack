@@ -98,6 +98,12 @@ export function useVideoCall({ sessionId, onError }: UseVideoCallOptions): UseVi
     try {
       setConnectionState('connecting');
 
+      // Clean up any existing connection first
+      if (webrtcManagerRef.current) {
+        console.log('🧹 Cleaning up previous connection...');
+        webrtcManagerRef.current.disconnect();
+      }
+
       // Initialize WebRTC manager
       const webrtcManager = new WebRTCManager();
       webrtcManagerRef.current = webrtcManager;
@@ -146,16 +152,28 @@ export function useVideoCall({ sessionId, onError }: UseVideoCallOptions): UseVi
         console.log('👑 Attempting to create session as HOST...');
         await webrtcManager.createSession(sessionId);
         console.log('✅ SUCCESS! I am the HOST');
+        console.log('📢 Waiting for guest to join...');
       } catch (error: any) {
         // Check if error is because ID is taken (someone else is host)
         if (error.message === 'SESSION_ID_TAKEN') {
           // If creation fails, join instead (become guest)
-          console.log('👤 Session exists, joining as GUEST...');
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          await webrtcManager.joinSession(sessionId);
-          console.log('✅ SUCCESS! Connected as GUEST');
+          console.log('👤 Host already exists, joining as GUEST...');
+          console.log('⏳ Waiting for host to be ready...');
+          
+          // Wait longer for host to fully initialize
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          try {
+            await webrtcManager.joinSession(sessionId);
+            console.log('✅ SUCCESS! Joined as GUEST');
+            console.log('🔄 Establishing media connection...');
+          } catch (joinError: any) {
+            console.error('❌ Failed to join session:', joinError);
+            throw new Error('Could not join the call. The host may have disconnected. Please try creating a new call.');
+          }
         } else {
           // Some other error occurred
+          console.error('❌ Unexpected error:', error);
           throw error;
         }
       }
