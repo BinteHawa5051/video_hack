@@ -16,8 +16,12 @@
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
   - **After completion: Commit to GitHub with user permission**
 
-- [ ] 2. Implement WebRTC Manager for peer-to-peer video calls
-  - [ ] 2.1 Create WebRTCManager class with PeerJS integration in /lib/webrtc
+- [x] 2. Implement WebRTC Manager for peer-to-peer video calls
+
+
+  - [x] 2.1 Create WebRTCManager class with PeerJS integration in /lib/webrtc
+
+
     - Create TypeScript interfaces for connection state and media state
     - Implement session creation with unique ID generation
     - Implement session joining with peer connection
@@ -26,37 +30,47 @@
     - Use EventEmitter pattern or callbacks for state changes
     - _Requirements: 1.1, 1.2, 1.3_
   
-  - [ ] 2.2 Write property test for session ID uniqueness
+  - [x] 2.2 Write property test for session ID uniqueness
+
+
     - **Feature: video-call-live-captions, Property 1: Session ID uniqueness**
     - **Validates: Requirements 1.1**
   
-  - [ ] 2.3 Implement two-participant limit enforcement
+  - [x] 2.3 Implement two-participant limit enforcement
+
     - Add participant counter to session state
     - Reject connection attempts when session has 2 participants
     - _Requirements: 1.4_
   
-  - [ ] 2.4 Write property test for two-participant limit
+  - [x] 2.4 Write property test for two-participant limit
+
+
     - **Feature: video-call-live-captions, Property 4: Two-participant limit enforcement**
     - **Validates: Requirements 1.4**
   
-  - [ ] 2.5 Implement media toggle functionality
+  - [x] 2.5 Implement media toggle functionality
+
     - Add toggleAudio method to enable/disable microphone
     - Add toggleVideo method to enable/disable camera
     - Ensure toggles work independently
     - _Requirements: 2.4, 2.5_
   
-  - [ ] 2.6 Write property test for media toggle independence
+  - [x] 2.6 Write property test for media toggle independence
+
+
     - **Feature: video-call-live-captions, Property 7: Media toggle independence**
     - **Validates: Requirements 2.4, 2.5**
   
-  - [ ] 2.7 Implement disconnect and cleanup
+  - [x] 2.7 Implement disconnect and cleanup
+
     - Close peer connections on disconnect
     - Stop all media tracks
     - Release resources
     - Emit disconnection events
     - _Requirements: 1.5_
   
-  - [ ] 2.8 Write property test for resource cleanup
+  - [x] 2.8 Write property test for resource cleanup
+
     - **Feature: video-call-live-captions, Property 5: Resource cleanup on disconnect**
     - **Validates: Requirements 1.5**
   
