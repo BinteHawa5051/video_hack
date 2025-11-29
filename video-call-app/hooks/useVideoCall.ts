@@ -109,7 +109,8 @@ export function useVideoCall({ sessionId, onError }: UseVideoCallOptions): UseVi
       });
 
       webrtcManager.on('remote-stream', (stream: MediaStream) => {
-        console.log('✅ Remote stream received');
+        console.log('✅ Remote stream received', stream);
+        console.log('Stream tracks:', stream.getTracks());
         setRemoteStream(stream);
         setConnectionState('connected');
       });
@@ -117,6 +118,15 @@ export function useVideoCall({ sessionId, onError }: UseVideoCallOptions): UseVi
       webrtcManager.on('connected', () => {
         console.log('✅ Connected to peer');
         setConnectionState('connected');
+        
+        // Check if remote stream is available after a short delay
+        setTimeout(() => {
+          const remote = webrtcManager.getRemoteStream();
+          if (remote && !remoteStream) {
+            console.log('📡 Setting remote stream from manager');
+            setRemoteStream(remote);
+          }
+        }, 1000);
       });
 
       webrtcManager.on('disconnected', () => {
