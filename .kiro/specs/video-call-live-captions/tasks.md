@@ -138,8 +138,12 @@
   
   - **After completion: Commit to GitHub with user permission**
 
-- [ ] 4. Implement Translation Service
-  - [ ] 4.1 Create TranslationService class in /lib/translation with free API integration
+- [x] 4. Implement Translation Service
+
+
+  - [x] 4.1 Create TranslationService class in /lib/translation with free API integration
+
+
     - Create TypeScript interfaces for translation requests/responses
     - Integrate LibreTranslate API (primary) using fetch
     - Add MyMemory API as fallback
@@ -149,36 +153,44 @@
     - Use environment variables for API endpoints
     - _Requirements: 6.1, 8.3_
   
-  - [ ] 4.2 Write property test for translation service invocation
+  - [x] 4.2 Write property test for translation service invocation
+
+
     - **Feature: video-call-live-captions, Property 19: Translation service invocation for non-English targets**
     - **Validates: Requirements 5.5, 6.1**
   
-  - [ ] 4.3 Implement no-translation optimization for matching languages
+  - [x] 4.3 Implement no-translation optimization for matching languages
+
     - Check if source equals target language
     - Skip translation API call when both are English
     - _Requirements: 5.4_
   
-  - [ ] 4.4 Write property test for no translation when languages match
+  - [x] 4.4 Write property test for no translation when languages match
+
     - **Feature: video-call-live-captions, Property 18: No translation for matching source and target**
     - **Validates: Requirements 5.4**
   
-  - [ ] 4.5 Implement fallback to English on translation failure
+  - [x] 4.5 Implement fallback to English on translation failure
+
     - Catch API errors and network failures
     - Return original English text as fallback
     - Log errors for debugging
     - _Requirements: 6.3_
   
-  - [ ] 4.6 Write property test for translation fallback
+  - [x] 4.6 Write property test for translation fallback
+
     - **Feature: video-call-live-captions, Property 20: Translation fallback on service failure**
     - **Validates: Requirements 6.3**
   
-  - [ ] 4.7 Implement rate limit error handling
+  - [x] 4.7 Implement rate limit error handling
+
     - Detect rate limit errors from API responses
     - Display user-friendly error message
     - Continue operation with English captions
     - _Requirements: 8.5_
   
-  - [ ] 4.8 Write property test for rate limit handling
+  - [x] 4.8 Write property test for rate limit handling
+
     - **Feature: video-call-live-captions, Property 27: Rate limit error handling**
     - **Validates: Requirements 8.5**
   
