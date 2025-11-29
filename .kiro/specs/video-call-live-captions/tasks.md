@@ -83,8 +83,13 @@
   
   - **After completion: Commit to GitHub with user permission**
 
-- [ ] 3. Implement Speech Recognition Service
-  - [ ] 3.1 Create SpeechRecognitionService class in /lib/speech using Web Speech API
+- [x] 3. Implement Speech Recognition Service
+
+
+
+  - [x] 3.1 Create SpeechRecognitionService class in /lib/speech using Web Speech API
+
+
     - Create TypeScript interfaces for recognition results
     - Check browser support for SpeechRecognition API
     - Initialize with default English language
@@ -94,25 +99,34 @@
     - Handle recognition errors gracefully
     - _Requirements: 4.1, 4.3, 4.5_
   
-  - [ ] 3.2 Write property test for default English language
+  - [x] 3.2 Write property test for default English language
+
+
     - **Feature: video-call-live-captions, Property 13: Default English source language**
     - **Validates: Requirements 4.3**
   
-  - [ ] 3.3 Implement caption finalization on silence detection
+  - [x] 3.3 Implement caption finalization on silence detection
+
+
     - Configure recognition to detect pauses
     - Emit final results when silence detected
     - _Requirements: 4.4_
   
-  - [ ] 3.4 Write property test for caption finalization
+  - [x] 3.4 Write property test for caption finalization
+
+
     - **Feature: video-call-live-captions, Property 14: Caption finalization on silence**
     - **Validates: Requirements 4.4**
   
-  - [ ] 3.5 Implement partial caption display for unclear speech
+  - [x] 3.5 Implement partial caption display for unclear speech
+
     - Handle interim results from recognition
     - Display partial captions as they arrive
     - _Requirements: 4.5_
   
-  - [ ] 3.6 Write property test for partial caption display
+  - [x] 3.6 Write property test for partial caption display
+
+
     - **Feature: video-call-live-captions, Property 15: Partial caption display on unclear speech**
     - **Validates: Requirements 4.5**
   
