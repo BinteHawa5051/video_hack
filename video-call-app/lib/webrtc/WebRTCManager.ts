@@ -123,10 +123,16 @@ export class WebRTCManager {
 
             // Call the peer with our media stream
             if (this.localStream) {
+              console.log('📞 Calling peer with local stream...');
+              console.log('Local stream tracks:', this.localStream.getTracks().map(t => `${t.kind}: ${t.enabled}`));
+              
               this.mediaConnection = this.peer!.call(sessionId, this.localStream);
+              console.log('✅ Call initiated, setting up media connection...');
+              
               this.setupMediaConnection();
               resolve();
             } else {
+              console.error('❌ No local stream available to call with');
               reject(new Error('Failed to get local media stream'));
             }
           } catch (error) {
@@ -314,9 +320,11 @@ export class WebRTCManager {
 
     // Handle incoming calls
     this.peer.on('call', async (call) => {
+      console.log('📞 Incoming call from:', call.peer);
+      
       // Enforce two-participant limit
       if (this.participantCount >= 2) {
-        console.warn('Third participant attempted to join. Rejecting connection.');
+        console.warn('⛔ Third participant attempted to join. Rejecting connection.');
         call.close();
         return;
       }
@@ -324,16 +332,22 @@ export class WebRTCManager {
       try {
         // Get local stream if not already available
         if (!this.localStream) {
+          console.log('🎥 Getting local stream to answer call...');
           await this.getLocalStream();
         }
 
+        console.log('📤 Answering call with local stream...');
+        console.log('Local stream tracks:', this.localStream!.getTracks().map(t => `${t.kind}: ${t.enabled}`));
+        
         // Answer the call with our stream
         call.answer(this.localStream!);
         this.mediaConnection = call;
         this.participantCount = 2;
+        
+        console.log('✅ Call answered, setting up media connection...');
         this.setupMediaConnection();
       } catch (error) {
-        console.error('Error answering call:', error);
+        console.error('❌ Error answering call:', error);
         call.close();
       }
     });
@@ -379,27 +393,38 @@ export class WebRTCManager {
    */
   private setupMediaConnection(): void {
     if (!this.mediaConnection) {
-      console.error('No media connection to setup');
+      console.error('❌ No media connection to setup');
       return;
     }
 
-    console.log('Setting up media connection listeners');
+    console.log('🔧 Setting up media connection listeners');
+    console.log('📡 Media connection object:', this.mediaConnection);
 
     this.mediaConnection.on('stream', (stream) => {
       console.log('✅ Remote stream received!', stream);
+      console.log('📹 Stream ID:', stream.id);
+      console.log('🎬 Stream tracks:', stream.getTracks().map(t => `${t.kind}: ${t.label}`));
       this.remoteStream = stream;
       this.emit('remote-stream', stream);
     });
 
     this.mediaConnection.on('close', () => {
-      console.log('Media connection closed');
+      console.log('❌ Media connection closed');
       this.remoteStream = null;
       this.emit('media-connection-closed');
     });
 
     this.mediaConnection.on('error', (error) => {
-      console.error('Media connection error:', error);
+      console.error('❌ Media connection error:', error);
       this.emit('media-connection-error', error);
     });
+
+    // Check if stream is already available (race condition fix)
+    setTimeout(() => {
+      if (this.mediaConnection && !this.remoteStream) {
+        console.log('⚠️ No stream received after 3 seconds, checking connection state...');
+        console.log('Connection state:', this.mediaConnection);
+      }
+    }, 3000);
   }
 }
