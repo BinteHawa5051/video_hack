@@ -26,41 +26,57 @@ export class WebRTCManager {
   private participantCount: number = 0;
 
   constructor(config?: WebRTCManagerConfig) {
-    this.config = {
-      host: config?.host || process.env.NEXT_PUBLIC_PEERJS_HOST || '0.peerjs.com',
-      port: config?.port || Number(process.env.NEXT_PUBLIC_PEERJS_PORT) || 443,
-      path: config?.path || process.env.NEXT_PUBLIC_PEERJS_PATH || '/',
-      secure: config?.secure ?? (process.env.NEXT_PUBLIC_PEERJS_SECURE === 'true') ?? true,
-    };
+    // Use PeerJS cloud server by default (no host/port needed)
+    // This uses the free PeerJS cloud signaling server
+    this.config = config || {};
   }
 
   /**
    * Create a new call session and return the session ID
    * Generates a cryptographically secure unique session identifier
+   * @param customSessionId - Optional custom session ID to use instead of generating one
    */
-  async createSession(): Promise<string> {
+  async createSession(customSessionId?: string): Promise<string> {
     return new Promise((resolve, reject) => {
       try {
-        // Generate a unique session ID using crypto API for security
-        const sessionId = this.generateSecureSessionId();
+        // Use custom session ID if provided, otherwise generate one
+        const sessionId = customSessionId || this.generateSecureSessionId();
 
-        this.peer = new Peer(sessionId, {
+        // Create peer with default PeerJS cloud server
+        // If config is provided, use it; otherwise use PeerJS defaults
+        this.peer = new Peer(sessionId, this.config.host ? {
           host: this.config.host,
           port: this.config.port,
           path: this.config.path,
           secure: this.config.secure,
-        });
+        } : undefined);
 
-        this.peer.on('open', (id) => {
+        this.peer.on('open', async (id) => {
           this.participantCount = 1;
           this.setupPeerListeners();
+          
+          // Get local stream immediately so we're ready to answer calls
+          try {
+            if (!this.localStream) {
+              await this.getLocalStream();
+              console.log('Local stream ready for incoming calls');
+            }
+          } catch (error) {
+            console.error('Failed to get local stream:', error);
+          }
+          
           this.emit('session-created', id);
           resolve(id);
         });
 
-        this.peer.on('error', (error) => {
-          console.error('Peer error:', error);
-          reject(error);
+        this.peer.on('error', (error: any) => {
+          console.error('Peer error during session creation:', error);
+          // Check if error is due to ID being taken
+          if (error.type === 'unavailable-id') {
+            reject(new Error('SESSION_ID_TAKEN'));
+          } else {
+            reject(error);
+          }
         });
       } catch (error) {
         reject(error);
@@ -77,12 +93,13 @@ export class WebRTCManager {
         // Create a new peer with a random ID for the joiner
         const joinerId = this.generateSecureSessionId();
 
-        this.peer = new Peer(joinerId, {
+        // Create peer with default PeerJS cloud server
+        this.peer = new Peer(joinerId, this.config.host ? {
           host: this.config.host,
           port: this.config.port,
           path: this.config.path,
           secure: this.config.secure,
-        });
+        } : undefined);
 
         this.peer.on('open', async () => {
           this.setupPeerListeners();
@@ -361,14 +378,21 @@ export class WebRTCManager {
    * Setup media connection event listeners
    */
   private setupMediaConnection(): void {
-    if (!this.mediaConnection) return;
+    if (!this.mediaConnection) {
+      console.error('No media connection to setup');
+      return;
+    }
+
+    console.log('Setting up media connection listeners');
 
     this.mediaConnection.on('stream', (stream) => {
+      console.log('✅ Remote stream received!', stream);
       this.remoteStream = stream;
       this.emit('remote-stream', stream);
     });
 
     this.mediaConnection.on('close', () => {
+      console.log('Media connection closed');
       this.remoteStream = null;
       this.emit('media-connection-closed');
     });

@@ -19,6 +19,7 @@
 - [x] 2. Implement WebRTC Manager for peer-to-peer video calls
 
 
+
   - [x] 2.1 Create WebRTCManager class with PeerJS integration in /lib/webrtc
 
 
